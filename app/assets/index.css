@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+
+html,body{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    font-family: 'Lato', sans-serif;
+    background-image: url(./assets/bGround.jpg);
+    background-color: #DEDDDD;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+main{
+    background-color: rgba(0, 0, 0, 0.4);
+    height: 100%;
+}
+
+span {
+    padding: 5px;
+}
+
+input[type="submit"] {
+    background: #ef3f5a;
+    border: 1px solid #ef3f5a;
+    color: #fff;
+    padding: 0 30px;
+    cursor: pointer;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+input[type="submit"]:hover {
+    background: #d73851;
+    border: 1px solid #d73851;
+}
+
+input[type="submit"]:disabled, input[type="submit"]:disabled:hover {
+    background: #B4B4B4;
+    border: 1px solid #B4B4B4;
+}
+
+input[type="search"] {
+    width: 250px;
+    padding-right: 5px;
+}
+
+.form > * {
+    border: 0;
+    padding: 0 0 0 10px;
+    background: #fff;
+    line-height: 50px;
+    font-size: 1rem;
+    border-radius: 0;
+    outline: 0;
+    -webkit-appearance: none;
+}
+
+.container{
+    height: 100%;
+    display: flex;
+    margin: auto;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-evenly;
+
+}
+
+h1{
+    margin-bottom: 5px;
+}
+
+.welcomeMessage {
+    color: #ffffffd1;
+    text-align: center;
+    min-width:200px;
+    font-weight: 200;
+    font-size: larger;
+}
+
+.cover {
+    padding-top: 20px;
+}
+
+.myShelf, .totalCharge {
+    background-color: #FFFFFFF0;
+    color: #4b4b4b;
+    margin-top: 5px;
+    display: flex;
+    flex-flow: nowrap;
+    justify-content: space-between;
+    border-radius: 2px;
+    font-size: 16px;
+    padding: 3px;
+
+
+    -webkit-box-shadow: 0px 0px 17px -2px rgba(0,0,0,0.34);
+    -moz-box-shadow: 0px 0px 17px -2px rgba(0,0,0,0.34);
+    box-shadow: 0px 0px 17px -2px rgba(0,0,0,0.34);
+}
+
+
+.totalCharge {
+
+    background: #ef3f5a;
+    border: 1px solid #ef3f5a;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.titleSpan{
+    text-align: left;
+    flex-grow: 1;
+}

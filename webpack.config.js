@@ -21,6 +21,9 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, 'app'),
   },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'app/index.html',

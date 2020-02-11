@@ -1,7 +1,10 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import components from '../components';
-import books from '../../api';
+
+// fetch data from a json file
+// Ideally this would be a fetch() function componentDidMount()
+import { books, defaultRentRate } from '../api/library.json';
 
 const {
   WelcomeMessage,
@@ -31,7 +34,7 @@ class MainContainer extends React.Component {
   state = {
     currentBook: '',
     myShelf: {},
-    rentRate: 1,
+    rentRate: defaultRentRate,
     suggestions: [],
   };
 

@@ -27,6 +27,13 @@ h1{
     margin-bottom: 5px;
 }
 
+input[type="number"] {
+    margin: 0 4px;
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ee3f5a3b;
+}
+
 input[type="submit"] {
     background: #ef3f5a;
     border: 1px solid #ef3f5a;
@@ -51,6 +58,10 @@ input[type="submit"]:disabled, input[type="submit"]:disabled:hover {
 input[type="search"] {
     width: 250px;
     padding-right: 5px;
+}
+
+.form {
+    margin-bottom: 20px;
 }
 
 .form > * {
@@ -82,23 +93,20 @@ input[type="search"] {
     font-size: larger;
 }
 
-.shelf-row, .totalCharge {
+.shelf-row, .totalCharge, .shelf-header {
     background-color: #FFFFFFF0;
     color: #4b4b4b;
-    margin-top: 5px;
+    margin-top: 2px;
     display: flex;
     flex-flow: nowrap;
     justify-content: space-between;
     border-radius: 2px;
     font-size: 16px;
     padding: 3px;
-    -webkit-box-shadow: 0 0 17px -2px rgba(0,0,0,0.34);
-    -moz-box-shadow: 0 0 17px -2px rgba(0,0,0,0.34);
-    box-shadow: 0 0 17px -2px rgba(0,0,0,0.34);
 }
 
 
-.totalCharge {
+.totalCharge, .shelf-header {
     background: #ef3f5a;
     border: 1px solid #ef3f5a;
     color: #fff;
@@ -111,8 +119,15 @@ input[type="search"] {
     flex-grow: 1;
 }
 
-.toast{
-    background-color: #FFFFFFF0;
-    animation: hide 0s 5s forwards;
+.shelf-header span:nth-child(2){
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
 }
-@keyframes hide  { to { visibility: hidden; } }
+
+.shelf-header span:nth-child(2),.shelf-row input:nth-child(2){
+    width: 60px;
+}
+
+.shelf-header span:nth-child(3),.shelf-row input:nth-child(3){
+    width: 125px;
+}

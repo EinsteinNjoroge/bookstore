@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/index.css';
+import 'react-toastify/dist/ReactToastify.css';
 import MainContainer from './containers';
 
 // eslint-disable-next-line react/prefer-stateless-function

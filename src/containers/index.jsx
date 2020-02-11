@@ -1,8 +1,6 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import components from '../components';
-import 'react-toastify/dist/ReactToastify.css';
-import '../assets/index.css';
 import books from '../../api';
 
 const {
@@ -23,9 +21,9 @@ const getSuggestions = (value) => {
     : books.filter(book => book.title.toLowerCase().startsWith(inputValue));
 };
 
-const getSuggestionValue = suggestion => suggestion.title;
+export const getSuggestionValue = suggestion => suggestion.title;
 
-const renderSuggestion = suggestion => suggestion.title;
+export const renderSuggestion = suggestion => suggestion.title;
 
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -64,11 +62,7 @@ class MainContainer extends React.Component {
       case 'warn':
         toast.warn(msg);
         break;
-      case 'success':
-        toast.success(msg);
-        break;
       default:
-        toast(msg);
     }
   };
 

@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import TotalCharge from './totalCharge';
 
 const charge = '10';
-const wrapper = mount(<TotalCharge charge={charge} />);
+const wrapper = shallow(<TotalCharge charge={charge} />);
 
 describe('Test TotalCharge', () => {
   it("Should display the words 'Total Charge'", () => {

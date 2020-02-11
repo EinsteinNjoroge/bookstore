@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import Shelf from './shelf';
 
-
 const removeFromShelf = jest.fn();
 const addNumOfBooks = jest.fn();
 const addRentDays = jest.fn();

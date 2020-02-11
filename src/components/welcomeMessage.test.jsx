@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import WelcomeMessage from './welcomeMesage';
 
-const wrapper = mount(<WelcomeMessage />);
+const wrapper = shallow(<WelcomeMessage />);
 
 describe('Test TotalCharge', () => {
   it('Should contain div with clasd .welcomeMessage', () => {

@@ -19,7 +19,7 @@ module.exports = {
   },
   mode: 'development',
   devServer: {
-    contentBase: path.resolve(__dirname, './src/assets'),
+    contentBase: path.resolve(__dirname, './src'),
   },
   resolve: {
     extensions: ['.js', '.jsx'],

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import fetch from 'node-fetch';
 import components from '../components';
-import books from '../../api';
 
 const {
   WelcomeMessage,
@@ -14,7 +14,7 @@ const DEFAULT_RENT_DURATION = 1;
 const DEFAULT_BOOK_COUNT = 1;
 const MAX_RENTED_BOOK = 10;
 
-const getSuggestions = (value) => {
+const getSuggestions = (books, value) => {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
   return inputLength === 0 ? []
@@ -32,11 +32,20 @@ class MainContainer extends React.Component {
     currentBook: '',
     myShelf: {},
     rentRate: 1,
+    books: [],
     suggestions: [],
   };
 
+  componentDidMount() {
+    fetch('../api/library.json')
+      .then(res => res.json())
+      .then(({ books }) => this.setState({ books }))
+      .catch(err => console.log(err));
+  }
+
   onSuggestionsFetchRequested = ({ value }) => {
-    this.setState({ suggestions: getSuggestions(value) });
+    const { books } = this.state;
+    this.setState({ suggestions: getSuggestions(books, value) });
   };
 
   onSuggestionsClearRequested = () => this.setState({ suggestions: [] });
@@ -92,7 +101,7 @@ class MainContainer extends React.Component {
   addToShelf = (e) => {
     e.preventDefault();
 
-    const { currentBook, myShelf } = this.state;
+    const { currentBook, myShelf, books } = this.state;
     if (!currentBook) {
       this.showMessage('Please enter a valid title', 'error');
       return;

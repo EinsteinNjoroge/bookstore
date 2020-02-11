@@ -1,5 +1,8 @@
+/* eslint-disable react/no-array-index-key,react/forbid-prop-types */
 import React, { Fragment } from 'react';
-
+import {
+  func, number, string, shape,
+} from 'prop-types';
 
 const renderHeaderRow = (
   <div className="shelf-header">
@@ -11,24 +14,25 @@ const renderHeaderRow = (
 );
 
 const ShelfRow = ({
-  index,
   title,
   rentDuration,
   numOfBooks,
   addNumOfBooks,
   addRentDays,
-  removeFromShelf
+  removeFromShelf,
 }) => (
   <div className="shelf-row">
     <span className="titleSpan">{title}</span>
-    <input id={title} onChange={addNumOfBooks} type="number" min="1" value={numOfBooks} />
-    <input id={title} onChange={addRentDays} type="number" min="1" value={rentDuration} />
-    <button id={title} type="button" onClick={removeFromShelf} className="delete-btn">Remove</button>
+    <input name={title} onChange={addNumOfBooks} type="number" min="1" value={numOfBooks} />
+    <input name={title} onChange={addRentDays} type="number" min="1" value={rentDuration} />
+    <button name={title} type="button" onClick={removeFromShelf} className="delete-btn">Remove</button>
   </div>
 );
 
 
-const Shelf = ({ books, addNumOfBooks, removeFromShelf, addRentDays }) => (
+const Shelf = ({
+  books, addNumOfBooks, removeFromShelf, addRentDays,
+}) => (
   <Fragment>
     {renderHeaderRow}
     {
@@ -48,5 +52,23 @@ const Shelf = ({ books, addNumOfBooks, removeFromShelf, addRentDays }) => (
     }
   </Fragment>
 );
+
+
+Shelf.propTypes = {
+  books: shape({}).isRequired,
+  addNumOfBooks: func.isRequired,
+  removeFromShelf: func.isRequired,
+  addRentDays: func.isRequired,
+};
+
+ShelfRow.propTypes = {
+  title: string.isRequired,
+  rentDuration: number.isRequired,
+  numOfBooks: number.isRequired,
+  addNumOfBooks: func.isRequired,
+  addRentDays: func.isRequired,
+  removeFromShelf: func.isRequired,
+};
+
 
 export default Shelf;

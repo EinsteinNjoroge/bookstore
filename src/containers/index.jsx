@@ -61,6 +61,9 @@ class MainContainer extends React.Component {
       case 'error':
         toast.error(msg);
         break;
+      case 'warn':
+        toast.warn(msg);
+        break;
       case 'success':
         toast.success(msg);
         break;
@@ -69,7 +72,7 @@ class MainContainer extends React.Component {
     }
   };
 
-  addNumOfBooks = ({ target: { id: book, value } }) => {
+  addNumOfBooks = ({ target: { name: book, value } }) => {
     if (value < 1) {
       this.showMessage('Number Books rented can only cannot be less than 1', 'error');
       return;
@@ -80,7 +83,7 @@ class MainContainer extends React.Component {
     this.setState({ myShelf: newShelf });
   };
 
-  addRentDays = ({ target: { id: book, value } }) => {
+  addRentDays = ({ target: { name: book, value } }) => {
     if (value < 1) {
       this.showMessage('Books can only be rented for at-least one day', 'error');
       return;
@@ -120,7 +123,7 @@ class MainContainer extends React.Component {
     this.setState({ myShelf: newShelf, currentBook: '' });
   };
 
-  removeFromShelf = ({ target: { id: book } }) => {
+  removeFromShelf = ({ target: { name: book } }) => {
     const { myShelf } = this.state;
     const newShelf = Object.assign({}, myShelf);
     delete newShelf[book];
@@ -131,6 +134,7 @@ class MainContainer extends React.Component {
     const {
       addToShelf,
       setBookState,
+      showMessage,
       state,
       calculateCharge,
       addNumOfBooks,
@@ -144,6 +148,9 @@ class MainContainer extends React.Component {
 
     const iHaveBooksInMyShelf = Object.keys(myShelf).length > 0;
     const disableInputs = Object.keys(myShelf).length >= MAX_RENTED_BOOK;
+    if (disableInputs) {
+      showMessage("You've reached the maximum number of books borrowable", 'warn');
+    }
     const totalCharge = calculateCharge();
 
     const inputProps = {

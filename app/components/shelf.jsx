@@ -6,6 +6,7 @@ const renderHeaderRow = (
     <span className="titleSpan">Book Title</span>
     <span>Copies</span>
     <span>Duration (Days)</span>
+    <span />
   </div>
 );
 
@@ -16,16 +17,18 @@ const ShelfRow = ({
   numOfBooks,
   addNumOfBooks,
   addRentDays,
+  removeFromShelf
 }) => (
   <div className="shelf-row">
     <span className="titleSpan">{title}</span>
     <input id={title} onChange={addNumOfBooks} type="number" min="1" value={numOfBooks} />
     <input id={title} onChange={addRentDays} type="number" min="1" value={rentDuration} />
+    <button id={title} type="button" onClick={removeFromShelf} className="delete-btn">Remove</button>
   </div>
 );
 
 
-const Shelf = ({ books, addNumOfBooks, addRentDays }) => (
+const Shelf = ({ books, addNumOfBooks, removeFromShelf, addRentDays }) => (
   <Fragment>
     {renderHeaderRow}
     {
@@ -36,6 +39,7 @@ const Shelf = ({ books, addNumOfBooks, addRentDays }) => (
             key={index}
             addNumOfBooks={addNumOfBooks}
             addRentDays={addRentDays}
+            removeFromShelf={removeFromShelf}
             title={title}
             index={index}
             {...books[title]}

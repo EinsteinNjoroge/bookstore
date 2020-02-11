@@ -87,6 +87,13 @@ class MainContainer extends React.Component {
     this.setState({ myShelf: newShelf, currentBook: '' });
   };
 
+  removeFromShelf = ({ target: { id: book } }) => {
+    const { myShelf } = this.state;
+    const newShelf = Object.assign({}, myShelf);
+    delete newShelf[book];
+    this.setState({ myShelf: newShelf });
+  };
+
   render() {
     const {
       addToShelf,
@@ -95,6 +102,7 @@ class MainContainer extends React.Component {
       calculateCharge,
       addNumOfBooks,
       addRentDays,
+      removeFromShelf,
     } = this;
 
     const { currentBook, toast, myShelf } = state;
@@ -117,6 +125,7 @@ class MainContainer extends React.Component {
           {
             iHaveBooksInMyShelf && (
             <Shelf
+              removeFromShelf={removeFromShelf}
               addNumOfBooks={addNumOfBooks}
               addRentDays={addRentDays}
               books={myShelf}

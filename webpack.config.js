@@ -3,7 +3,7 @@ var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './app/index.jsx',
+  entry: './src/index.jsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
@@ -19,14 +19,14 @@ module.exports = {
   },
   mode: 'development',
   devServer: {
-    contentBase: path.resolve(__dirname, 'app'),
+    contentBase: path.resolve(__dirname, './src/assets'),
   },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
+      template: 'src/index.html',
     }),
   ],
 };

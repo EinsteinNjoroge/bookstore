@@ -17,6 +17,7 @@ body{
 main{
     background-color: rgba(0, 0, 0, 0.4);
     height: 100%;
+    overflow-y: auto;
 }
 
 span {
@@ -56,18 +57,19 @@ input[type="submit"]:disabled, input[type="submit"]:disabled:hover {
 }
 
 input[type="search"] {
+    background: #fff;
     width: 250px;
     padding-right: 5px;
 }
 
 .form {
-    margin-bottom: 20px;
+    display: flex;
+    margin: 20px 0;
 }
 
-.form > * {
+.form input {
     border: 0;
-    padding: 0 0 0 10px;
-    background: #fff;
+    padding: 0 5px 0 5px;
     line-height: 50px;
     font-size: 1rem;
     border-radius: 0;
@@ -78,11 +80,10 @@ input[type="search"] {
 .container{
     height: 100%;
     display: flex;
-    margin: auto;
-    flex-flow: row wrap;
+    margin: auto 0;
+    flex-flow: column wrap;
     align-items: center;
-    justify-content: space-evenly;
-
+    justify-content: center;
 }
 
 .welcomeMessage {
@@ -153,4 +154,27 @@ input[type="search"] {
 .delete-btn:hover {
     background: #D73851;
     color: #FFF;
+}
+
+.react-autosuggest__suggestions-container {
+    width: 250px;
+    position: absolute;
+    background-color: #FFF;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.react-autosuggest__suggestions-container ul {
+    margin: 0;
+    padding: 0;
+    line-height: 32px;
+}
+
+.react-autosuggest__suggestions-container li {
+    padding: 0 10px;
+    list-style: none;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background-color: rgba(215, 56, 81, 0.31);;
 }

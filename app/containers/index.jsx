@@ -1,8 +1,9 @@
 import React from 'react';
-import '../assets/index.css';
 import { ToastContainer, toast } from 'react-toastify';
 import components from '../components';
 import 'react-toastify/dist/ReactToastify.css';
+import '../assets/index.css';
+import books from '../../api';
 
 const {
   WelcomeMessage,
@@ -15,6 +16,17 @@ const DEFAULT_RENT_DURATION = 1;
 const DEFAULT_BOOK_COUNT = 1;
 const MAX_RENTED_BOOK = 10;
 
+const getSuggestions = (value) => {
+  const inputValue = value.trim().toLowerCase();
+  const inputLength = inputValue.length;
+  return inputLength === 0 ? []
+    : books.filter(book => book.title.toLowerCase().startsWith(inputValue));
+};
+
+const getSuggestionValue = suggestion => suggestion.title;
+
+const renderSuggestion = suggestion => suggestion.title;
+
 
 // eslint-disable-next-line react/prefer-stateless-function
 class MainContainer extends React.Component {
@@ -22,11 +34,16 @@ class MainContainer extends React.Component {
     currentBook: '',
     myShelf: {},
     rentRate: 1,
+    suggestions: [],
   };
 
-  setBookState = ({ target: { value: currentBook } }) => {
-    this.setState({ currentBook });
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({ suggestions: getSuggestions(value) });
   };
+
+  onSuggestionsClearRequested = () => this.setState({ suggestions: [] });
+
+  setBookState = (event, { newValue }) => this.setState({ currentBook: newValue });
 
   calculateCharge = () => {
     const { myShelf, rentRate } = this.state;
@@ -59,7 +76,7 @@ class MainContainer extends React.Component {
     }
     const { myShelf } = this.state;
     const newShelf = Object.assign({}, myShelf);
-    newShelf[book].numOfBooks = value;
+    newShelf[book].numOfBooks = parseInt(value, 10);
     this.setState({ myShelf: newShelf });
   };
 
@@ -71,7 +88,7 @@ class MainContainer extends React.Component {
 
     const { myShelf } = this.state;
     const newShelf = Object.assign({}, myShelf);
-    newShelf[book].rentDuration = value;
+    newShelf[book].rentDuration = parseInt(value, 10);
     this.setState({ myShelf: newShelf });
   };
 
@@ -80,7 +97,12 @@ class MainContainer extends React.Component {
 
     const { currentBook, myShelf } = this.state;
     if (!currentBook) {
-      this.showMessage('Enter a valid title', 'error');
+      this.showMessage('Please enter a valid title', 'error');
+      return;
+    }
+
+    if (!books.find(book => book.title === currentBook)) {
+      this.showMessage('Sorry we dont have that book in our library', 'error');
       return;
     }
 
@@ -114,13 +136,31 @@ class MainContainer extends React.Component {
       addNumOfBooks,
       addRentDays,
       removeFromShelf,
+      onSuggestionsFetchRequested,
+      onSuggestionsClearRequested,
     } = this;
 
-    const { currentBook, myShelf } = state;
+    const { currentBook, myShelf, suggestions } = state;
 
     const iHaveBooksInMyShelf = Object.keys(myShelf).length > 0;
     const disableInputs = Object.keys(myShelf).length >= MAX_RENTED_BOOK;
     const totalCharge = calculateCharge();
+
+    const inputProps = {
+      placeholder: 'What would you like to read?',
+      value: currentBook,
+      onChange: setBookState,
+      type: 'search',
+    };
+
+    const autoSuggestProps = {
+      suggestions,
+      onSuggestionsFetchRequested,
+      onSuggestionsClearRequested,
+      getSuggestionValue,
+      renderSuggestion,
+      inputProps,
+    };
 
     return (
       <div className="container">
@@ -128,10 +168,9 @@ class MainContainer extends React.Component {
         <div>
           <ToastContainer position={toast.POSITION.TOP_LEFT} />
           <Form
+            autoSuggestProps={autoSuggestProps}
             disabled={disableInputs}
-            currentBook={currentBook}
             onSubmit={addToShelf}
-            onChange={setBookState}
           />
           {
             iHaveBooksInMyShelf && (

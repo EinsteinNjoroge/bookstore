@@ -1,19 +1,13 @@
 import React from 'react';
+import Autosuggest from 'react-autosuggest';
 
 const Form = ({
   onSubmit,
   disabled,
-  currentBook,
-  onChange,
+  autoSuggestProps: { inputProps, ...rest },
 }) => (
   <form className="form" onSubmit={onSubmit}>
-    <input
-      type="search"
-      disabled={disabled}
-      value={currentBook}
-      onChange={onChange}
-      placeholder="What would you like to read?"
-    />
+    <Autosuggest {...rest} inputProps={{ disabled, ...inputProps }} />
     <input type="submit" disabled={disabled} value="Add to my shelf" />
   </form>
 );

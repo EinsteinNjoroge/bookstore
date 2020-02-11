@@ -1,13 +1,14 @@
 import React from 'react';
 import '../assets/index.css';
+import { ToastContainer, toast } from 'react-toastify';
 import components from '../components';
+import 'react-toastify/dist/ReactToastify.css';
 
 const {
   WelcomeMessage,
   Form,
   Shelf,
   TotalCharge,
-  Toast,
 } = components;
 
 const DEFAULT_RENT_DURATION = 1;
@@ -20,7 +21,6 @@ class MainContainer extends React.Component {
   state = {
     currentBook: '',
     myShelf: {},
-    toast: {},
     rentRate: 1,
   };
 
@@ -39,11 +39,22 @@ class MainContainer extends React.Component {
     return totalCharge;
   };
 
-  showMessage = (msg, state) => this.setState({ toast: { msg, state } });
+  showMessage = (msg, state) => {
+    switch (state) {
+      case 'error':
+        toast.error(msg);
+        break;
+      case 'success':
+        toast.success(msg);
+        break;
+      default:
+        toast(msg);
+    }
+  };
 
   addNumOfBooks = ({ target: { id: book, value } }) => {
     if (value < 1) {
-      this.showMessage('Number Books rented can only cannot be less than 1');
+      this.showMessage('Number Books rented can only cannot be less than 1', 'error');
       return;
     }
     const { myShelf } = this.state;
@@ -54,7 +65,7 @@ class MainContainer extends React.Component {
 
   addRentDays = ({ target: { id: book, value } }) => {
     if (value < 1) {
-      this.showMessage('Books can only be rented for at-least one day');
+      this.showMessage('Books can only be rented for at-least one day', 'error');
       return;
     }
 
@@ -105,7 +116,7 @@ class MainContainer extends React.Component {
       removeFromShelf,
     } = this;
 
-    const { currentBook, toast, myShelf } = state;
+    const { currentBook, myShelf } = state;
 
     const iHaveBooksInMyShelf = Object.keys(myShelf).length > 0;
     const disableInputs = Object.keys(myShelf).length >= MAX_RENTED_BOOK;
@@ -115,7 +126,7 @@ class MainContainer extends React.Component {
       <div className="container">
         <WelcomeMessage />
         <div>
-          {toast.msg && <Toast {...toast} />}
+          <ToastContainer position={toast.POSITION.TOP_LEFT} />
           <Form
             disabled={disableInputs}
             currentBook={currentBook}

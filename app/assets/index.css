@@ -107,6 +107,13 @@ input[type="search"] {
 
 
 .totalCharge, .shelf-header {
+    background-color: #FFF;
+    color: #4b4b4b;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.shelf-header {
     background: #EF3F5A;
     border: 1px solid #EF3F5A;
     color: #fff;
@@ -138,12 +145,12 @@ input[type="search"] {
 .delete-btn {
     width: 55px;
     padding: 0;
-    background: #EF3F5A;
-    border: 1px solid #EF3F5A;
-    color: #FFF;
+    background: #FFF;
+    border: none;
+    color: #D73851;
 }
 
 .delete-btn:hover {
-    background: #d73851;
-    border: 1px solid #d73851;
+    background: #D73851;
+    color: #FFF;
 }

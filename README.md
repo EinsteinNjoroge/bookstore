@@ -4,7 +4,7 @@
 
 ## Description
 It is a program to calculate and print a statement of a customer's charges at a book rental store.
-You can access this online at (https://genius-bookstore.000webhostapp.com/)[https://genius-bookstore.000webhostapp.com/]
+You can access this online at [https://genius-bookstore.000webhostapp.com/](https://genius-bookstore.000webhostapp.com/)
 
 ## Installation
 - clone `https://github.com/EinsteinNjoroge/bookstore.git`

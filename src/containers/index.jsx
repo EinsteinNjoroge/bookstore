@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import components from '../components';
@@ -8,10 +9,18 @@ import { library } from '../api/library.json';
 
 let allBooks = [];
 Object.keys(library).forEach((genre) => {
-  const { books, rentRate } = library[genre];
+  const {
+    books, rentRate, minRentDuration, minCharge,
+  } = library[genre];
   books.forEach((book) => {
-    book.rentRate = rentRate; // eslint-disable-line no-param-reassign
-    book.genre = genre;// eslint-disable-line no-param-reassign
+    book.rentRate = rentRate;
+    book.genre = genre;
+    if (minRentDuration) {
+      book.minRentDuration = minRentDuration;
+    }
+    if (minRentDuration) {
+      book.minCharge = minCharge;
+    }
   });
   allBooks = [...allBooks, ...books];
 });
@@ -38,7 +47,6 @@ export const getSuggestionValue = suggestion => suggestion.title;
 
 export const renderSuggestion = ({ title, genre }) => `${title} - ${genre}`;
 
-// eslint-disable-next-line react/prefer-stateless-function
 class MainContainer extends React.Component {
   state = {
     currentBook: '',
@@ -54,15 +62,31 @@ class MainContainer extends React.Component {
 
   setBookState = (event, { newValue }) => this.setState({ currentBook: newValue });
 
-  calculateCharge = () => {
-    const { myShelf } = this.state;
+  getTotalCharge = () => {
     let totalCharge = 0;
-    Object.keys(myShelf).forEach((title) => {
-      const { rentDuration, numOfBooks, rentRate } = myShelf[title];
-      totalCharge += rentDuration * rentRate * numOfBooks;
-    });
-
+    const { myShelf } = this.state;
+    Object.values(myShelf).forEach((book) => { totalCharge += book.charge; });
     return totalCharge;
+  };
+
+  calculateCharge = (book) => {
+    const { myShelf } = this.state;
+    const newShelf = { ...myShelf };
+    const {
+      rentDuration, numOfBooks, rentRate, minRentDuration, minCharge,
+    } = myShelf[book];
+
+    if (minRentDuration && minCharge) {
+      newShelf[book].charge = minCharge;
+
+      if (rentDuration > minRentDuration) {
+        newShelf[book].charge += (rentDuration - minRentDuration) * rentRate * numOfBooks;
+      }
+    } else {
+      newShelf[book].charge = rentDuration * rentRate * numOfBooks;
+    }
+
+    this.setState({ myShelf: newShelf });
   };
 
   showMessage = (msg, state) => {
@@ -85,7 +109,10 @@ class MainContainer extends React.Component {
     const { myShelf } = this.state;
     const newShelf = Object.assign({}, myShelf);
     newShelf[book].numOfBooks = parseInt(value, 10);
-    this.setState({ myShelf: newShelf });
+    this.setState(
+      { myShelf: newShelf },
+      () => this.calculateCharge(book),
+    );
   };
 
   addRentDays = ({ target: { name: book, value } }) => {
@@ -97,7 +124,10 @@ class MainContainer extends React.Component {
     const { myShelf } = this.state;
     const newShelf = Object.assign({}, myShelf);
     newShelf[book].rentDuration = parseInt(value, 10);
-    this.setState({ myShelf: newShelf });
+    this.setState(
+      { myShelf: newShelf },
+      () => this.calculateCharge(book),
+    );
   };
 
   addToShelf = (e) => {
@@ -127,7 +157,10 @@ class MainContainer extends React.Component {
       };
     }
 
-    this.setState({ myShelf: newShelf, currentBook: '' });
+    this.setState(
+      { myShelf: newShelf, currentBook: '' },
+      () => this.calculateCharge(currentBook),
+    );
   };
 
   removeFromShelf = ({ target: { name: book } }) => {
@@ -143,7 +176,7 @@ class MainContainer extends React.Component {
       setBookState,
       showMessage,
       state,
-      calculateCharge,
+      getTotalCharge,
       addNumOfBooks,
       addRentDays,
       removeFromShelf,
@@ -158,7 +191,6 @@ class MainContainer extends React.Component {
     if (disableInputs) {
       showMessage("You've reached the maximum number of books borrowable", 'warn');
     }
-    const totalCharge = calculateCharge();
 
     const inputProps = {
       placeholder: 'What would you like to read?',
@@ -196,7 +228,7 @@ class MainContainer extends React.Component {
             />
             )
           }
-          { totalCharge > 0 && <TotalCharge charge={totalCharge} /> }
+          { iHaveBooksInMyShelf > 0 && <TotalCharge charge={getTotalCharge()} /> }
         </div>
       </div>
     );

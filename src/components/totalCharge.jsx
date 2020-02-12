@@ -15,7 +15,7 @@ TotalCharge.propTypes = {
 };
 
 TotalCharge.defaultProps = {
-  charge: null,
+  charge: 0,
 };
 
 export default TotalCharge;

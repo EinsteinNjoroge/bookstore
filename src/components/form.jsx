@@ -8,12 +8,16 @@ const Form = ({
   onSubmit,
   disabled,
   autoSuggestProps: { inputProps, ...rest },
-}) => (
-  <form className="form" onSubmit={onSubmit}>
-    <Autosuggest {...rest} inputProps={{ disabled, ...inputProps }} />
-    <input type="submit" disabled={disabled} value="Add to my shelf" />
-  </form>
-);
+}) => {
+  const props = { ...inputProps };
+  if (disabled) props.disabled = disabled;
+  return (
+    <form className="form" onSubmit={onSubmit}>
+      <Autosuggest {...rest} inputProps={props} />
+      <input type="submit" disabled={disabled} value="Add to my shelf" />
+    </form>
+  );
+};
 
 Form.propTypes = {
   onSubmit: func.isRequired,

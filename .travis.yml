@@ -8,8 +8,3 @@ script:
 cache:
   directories:
     - "node_modules"
-deploy:
-  provider: heroku
-  api_key:
-    secure: "hcEMxALYE7yGmt250dZkEH+gNT2Rt/4qpQ/OoWRQdCCU8/gS2d0iI+o0tJWgGo2PuhExLL2OQa6Mxa3MFbAQTAdj5QU3FE82L/z8guTaToqVffMfgwfrLHNCQB1KQp6VFQQSrOxp9/FU+BmMriXPBJUe/ZgKkZEkDoi1/IqRH5LgLM8QxO5yRrOmgk34q/1PEVaaJhW2d6Zoj+o+SzjkD1J4RI/DULPsuodvWenRkBqx8byHYz+zmgMXo6+y9u2tNtxlVpfRQ6KHDIpkUm2ewjpMTBpZzgLwTXFgzuVUAIg3TI/04VgEK10eXQOAfqZih1XYfVxsF/KIquduWPzMzj2Cx8HbP/lL66wUqVucWMQ//3AyeDiTvIGZWjc4/3yb9tv75xopI/VZihqDsiaHm2iQXUoKeFrt7yT6TZcI6EsjSw9UDK4Kq2QU194JiyHvKojUQIK6sdnCKNrSbK62BdSjA81Nora5+WkCCD1bdofrUfz6zVQHWJQkmsZgPirhXr3JHPbi/uj1QFJxQgItv7lUMFoN7kagG02iDxD6aofZnfNDCgDYVFCp4pVNAtlTGQddW80YrOmR8BVqXq6GbBmB7d+mjOdzvdazjLj1bzYkoLLeLXnmd/iUi1Alq8TRWMRm1UT7Xg17Aa/w4p+gOZIf1Wpgc3Ksa9aPEMiSw48="
-    app: vast-brook-68345

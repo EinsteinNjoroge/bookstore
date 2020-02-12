@@ -118,16 +118,41 @@ describe('Test MainContainer', () => {
     expect(showMessage).toBeCalled();
   });
 
+  it('Should getTotalCharge fictional', () => {
+    const currentBook = library.fiction.books[0].title;
+    const { rentRate } = library.fiction;
+    wrapper.setState({ currentBook });
+
+    wrapper.instance().addToShelf({ preventDefault: () => {} });
+    expect(wrapper.instance().getTotalCharge()).toEqual(rentRate);
+
+    wrapper.instance().addRentDays({ target: { name: currentBook, value: 3 } });
+    expect(wrapper.instance().getTotalCharge()).toEqual(3 * rentRate);
+  });
+
+  it('Should getTotalCharge novels', () => {
+    const currentBook = library.novel.books[0].title;
+    const { rentRate, minCharge } = library.novel;
+
+    wrapper.setState({ currentBook });
+    wrapper.instance().addToShelf({ preventDefault: () => {} });
+    expect(wrapper.instance().getTotalCharge()).toEqual(minCharge);
+
+    wrapper.instance().addRentDays({ target: { name: currentBook, value: 3 } });
+    expect(wrapper.instance().getTotalCharge()).toEqual(minCharge);
+
+    wrapper.instance().addRentDays({ target: { name: currentBook, value: 4 } });
+    expect(wrapper.instance().getTotalCharge()).toEqual(minCharge + rentRate);
+  });
+
   it('Should calculateCharge', () => {
     const currentBook = library.fiction.books[0].title;
     const { rentRate } = library.fiction;
     wrapper.setState({ currentBook });
 
     wrapper.instance().addToShelf({ preventDefault: () => {} });
-    expect(wrapper.instance().calculateCharge()).toEqual(rentRate);
-
-    wrapper.instance().addNumOfBooks({ target: { name: currentBook, value: 3 } });
-    expect(wrapper.instance().calculateCharge()).toEqual(3 * rentRate);
+    wrapper.instance().calculateCharge(currentBook);
+    expect(wrapper.state().myShelf[currentBook].charge).toEqual(rentRate);
   });
 
   it('Should setBookState', () => {

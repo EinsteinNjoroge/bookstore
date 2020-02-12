@@ -4,7 +4,17 @@ import components from '../components';
 
 // fetch data from a json file
 // Ideally this would be a fetch() function componentDidMount()
-import { books, defaultRentRate } from '../api/library.json';
+import { library } from '../api/library.json';
+
+let allBooks = [];
+Object.keys(library).forEach((genre) => {
+  const { books, rentRate } = library[genre];
+  books.forEach((book) => {
+    book.rentRate = rentRate; // eslint-disable-line no-param-reassign
+    book.genre = genre;// eslint-disable-line no-param-reassign
+  });
+  allBooks = [...allBooks, ...books];
+});
 
 const {
   WelcomeMessage,
@@ -21,20 +31,18 @@ const getSuggestions = (value) => {
   const inputValue = value.trim().toLowerCase();
   const inputLength = inputValue.length;
   return inputLength === 0 ? []
-    : books.filter(book => book.title.toLowerCase().startsWith(inputValue));
+    : allBooks.filter(book => book.title.toLowerCase().startsWith(inputValue));
 };
 
 export const getSuggestionValue = suggestion => suggestion.title;
 
-export const renderSuggestion = suggestion => suggestion.title;
-
+export const renderSuggestion = ({ title, genre }) => `${title} - ${genre}`;
 
 // eslint-disable-next-line react/prefer-stateless-function
 class MainContainer extends React.Component {
   state = {
     currentBook: '',
     myShelf: {},
-    rentRate: defaultRentRate,
     suggestions: [],
   };
 
@@ -47,10 +55,10 @@ class MainContainer extends React.Component {
   setBookState = (event, { newValue }) => this.setState({ currentBook: newValue });
 
   calculateCharge = () => {
-    const { myShelf, rentRate } = this.state;
+    const { myShelf } = this.state;
     let totalCharge = 0;
     Object.keys(myShelf).forEach((title) => {
-      const { rentDuration, numOfBooks } = myShelf[title];
+      const { rentDuration, numOfBooks, rentRate } = myShelf[title];
       totalCharge += rentDuration * rentRate * numOfBooks;
     });
 
@@ -101,7 +109,7 @@ class MainContainer extends React.Component {
       return;
     }
 
-    if (!books.find(book => book.title === currentBook)) {
+    if (!allBooks.find(book => book.title === currentBook)) {
       this.showMessage('Sorry we dont have that book in our library', 'error');
       return;
     }
@@ -111,7 +119,9 @@ class MainContainer extends React.Component {
     if (newShelf[currentBook]) {
       newShelf[currentBook].numOfBooks += 1;
     } else {
+      const bookDetails = allBooks.filter(x => x.title === currentBook)[0];
       newShelf[currentBook] = {
+        ...bookDetails,
         rentDuration: DEFAULT_RENT_DURATION,
         numOfBooks: DEFAULT_BOOK_COUNT,
       };

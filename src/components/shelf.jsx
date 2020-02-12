@@ -7,15 +7,19 @@ import {
 const renderHeaderRow = (
   <div className="shelf-header">
     <span className="titleSpan">Book Title</span>
-    <span>Copies</span>
-    <span>Duration (Days)</span>
-    <span />
+    <span className="genre">Genre</span>
+    <span className="copies">Copies</span>
+    <span className="duration">Duration (Days)</span>
+    <span className="charge">Charge</span>
+    <span className="action" />
   </div>
 );
 
 const ShelfRow = ({
   title,
+  genre,
   rentDuration,
+  rentRate,
   numOfBooks,
   addNumOfBooks,
   addRentDays,
@@ -23,9 +27,32 @@ const ShelfRow = ({
 }) => (
   <div className="shelf-row">
     <span className="titleSpan">{title}</span>
-    <input name={title} onChange={addNumOfBooks} type="number" min="1" value={numOfBooks} />
-    <input name={title} onChange={addRentDays} type="number" min="1" value={rentDuration} />
-    <button name={title} type="button" onClick={removeFromShelf} className="delete-btn">Remove</button>
+    <span className="genre">{genre}</span>
+    <input
+      className="copies"
+      name={title}
+      onChange={addNumOfBooks}
+      type="number"
+      min="1"
+      value={numOfBooks}
+    />
+    <input
+      className="duration"
+      name={title}
+      onChange={addRentDays}
+      type="number"
+      min="1"
+      value={rentDuration}
+    />
+    <span className="charge">{rentDuration * numOfBooks * rentRate}</span>
+    <button
+      name={title}
+      type="button"
+      onClick={removeFromShelf}
+      className="action delete-btn"
+    >
+      Remove
+    </button>
   </div>
 );
 
@@ -63,6 +90,8 @@ Shelf.propTypes = {
 
 ShelfRow.propTypes = {
   title: string.isRequired,
+  genre: string.isRequired,
+  rentRate: number.isRequired,
   rentDuration: number.isRequired,
   numOfBooks: number.isRequired,
   addNumOfBooks: func.isRequired,

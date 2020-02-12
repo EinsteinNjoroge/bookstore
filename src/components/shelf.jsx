@@ -19,7 +19,7 @@ const ShelfRow = ({
   title,
   genre,
   rentDuration,
-  rentRate,
+  charge,
   numOfBooks,
   addNumOfBooks,
   addRentDays,
@@ -44,7 +44,9 @@ const ShelfRow = ({
       min="1"
       value={rentDuration}
     />
-    <span className="charge">{rentDuration * numOfBooks * rentRate}</span>
+    <span className="charge">
+      {charge}
+    </span>
     <button
       name={title}
       type="button"
@@ -91,7 +93,7 @@ Shelf.propTypes = {
 ShelfRow.propTypes = {
   title: string.isRequired,
   genre: string.isRequired,
-  rentRate: number.isRequired,
+  charge: number.isRequired,
   rentDuration: number.isRequired,
   numOfBooks: number.isRequired,
   addNumOfBooks: func.isRequired,

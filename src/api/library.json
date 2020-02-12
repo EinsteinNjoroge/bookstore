@@ -2,6 +2,8 @@
   "library": {
     "regular": {
       "rentRate": 1.5,
+      "minRentDuration": 2,
+      "minCharge": 2,
       "books": [
         {
           "author": "Chinua Achebe",
@@ -672,6 +674,8 @@
     },
     "novel": {
       "rentRate": 1.5,
+      "minRentDuration": 3,
+      "minCharge": 4.5,
       "books": [
         {
           "author": "Murasaki Shikibu",

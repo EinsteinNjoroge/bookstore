@@ -80,16 +80,28 @@ input[type="search"] {
     height: 100%;
     display: flex;
     margin: auto 0;
-    flex-flow: column wrap;
+    min-width: 550px;
+    flex-flow: column;
     align-items: center;
     justify-content: center;
+}
+
+.welcomeMessage span {
+    font-weight: 400;
+}
+
+.welcomeMessage div {
+    text-align: left;
+    padding-top: 5px;
+    font-size: large;
+    text-shadow: 0 1px 12px rgba(28,28,28,0.6);
 }
 
 .welcomeMessage {
     color: #ffffffd1;
     text-align: center;
     min-width:200px;
-    font-weight: 400;
+    font-weight: 200;
     font-size: larger;
 }
 
@@ -131,28 +143,29 @@ input[type="search"] {
 }
 
 .genre {
-    width: 60px;
+    min-width: 60px;
 }
 
 .copies, .copies > input{
+    min-width: 60px;
     width: 60px;
 }
 
 .duration, .duration > input{
-    width: 125px;
+    min-width: 125px;
 }
 
 .charge {
     text-align: center;
-    width: 50px;
+    min-width: 50px;
 }
 
 .action {
-    width: 48px;
+    min-width: 48px;
 }
 
 .delete-btn {
-    width: 55px;
+    min-width: 55px;
     padding: 0;
     background: #FFF;
     border: none;

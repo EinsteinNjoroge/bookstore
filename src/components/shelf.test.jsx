@@ -8,7 +8,12 @@ const addNumOfBooks = jest.fn();
 const addRentDays = jest.fn();
 const props = {
   books: {
-    firstBook: { rentDuration: 1, numOfBooks: 2 },
+    firstBook: {
+      rentDuration: 1,
+      numOfBooks: 2,
+      rentRate: 1.5,
+      genre: 'fiction',
+    },
   },
   addNumOfBooks,
   removeFromShelf,
@@ -17,7 +22,7 @@ const props = {
 
 const wrapperWithoutBooks = () => {
   const propsWithoutBooks = { ...props };
-  propsWithoutBooks.books = [];
+  propsWithoutBooks.books = {};
   return mount(<Shelf {...propsWithoutBooks} />);
 };
 
@@ -26,7 +31,7 @@ const wrapper = mount(<Shelf {...props} />);
 describe('Test Shelf', () => {
   it('Shelf should have a header row with 4 spans', () => {
     expect(wrapper.find('.shelf-header').length).toBe(1);
-    expect(wrapper.find('.shelf-header').children().length).toBe(4);
+    expect(wrapper.find('.shelf-header').children().length).toBe(6);
   });
 
   it('Shelf should not have shelf-row when books are not available', () => {

@@ -2,6 +2,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MainContainer, { getSuggestionValue, renderSuggestion } from './index';
+import { library } from '../api/library.json';
+
+const bookFixture = {
+  oneBook: {
+    rentDuration: 1,
+    numOfBooks: 2,
+    rentRate: 1.5,
+    genre: 'fiction',
+  },
+};
 
 let wrapper;
 
@@ -29,15 +39,14 @@ describe('Test MainContainer', () => {
   });
 
   it('Should conditionally render Shelf and TotalCharge component', () => {
-    wrapper.setState({ myShelf: { oneBook: { rentDuration: 1, numOfBooks: 2 } } });
+    wrapper.setState({ myShelf: bookFixture });
     expect(wrapper.find('Shelf').length).toBe(1);
     expect(wrapper.find('TotalCharge').length).toBe(1);
   });
 
   it('Should removeFromShelf', () => {
-    const newShelf = { oneBook: { rentDuration: 1, numOfBooks: 2 } };
-    wrapper.setState({ myShelf: newShelf });
-    expect(wrapper.state().myShelf).toEqual(newShelf);
+    wrapper.setState({ myShelf: bookFixture });
+    expect(wrapper.state().myShelf).toEqual(bookFixture);
 
     wrapper.instance().removeFromShelf({ target: { name: 'oneBook' } });
     expect(wrapper.state().myShelf).toEqual({});
@@ -66,17 +75,17 @@ describe('Test MainContainer', () => {
     wrapper.instance().addToShelf({ preventDefault: () => {} });
     expect(showMessage).toBeCalled();
 
+    const currentBook = 'Fairy tales';
+
     // should add a book to myShelf correctly
-    wrapper.setState({ currentBook: 'Fairy tales' });
+    wrapper.setState({ currentBook });
     wrapper.instance().addToShelf({ preventDefault: () => {} });
-    let newShelf = { 'Fairy tales': { rentDuration: 1, numOfBooks: 1 } };
-    expect(wrapper.state().myShelf).toEqual(newShelf);
+    expect(typeof wrapper.state().myShelf[currentBook]).toEqual('object');
 
     // should increment count when existing book is added to myShelf
-    wrapper.setState({ currentBook: 'Fairy tales' });
+    wrapper.setState({ currentBook });
     wrapper.instance().addToShelf({ preventDefault: () => {} });
-    newShelf = { 'Fairy tales': { rentDuration: 1, numOfBooks: 2 } };
-    expect(wrapper.state().myShelf).toEqual(newShelf);
+    expect(wrapper.state().myShelf[currentBook].numOfBooks).toEqual(2);
   });
 
   it('Should addRentDays', () => {
@@ -85,8 +94,8 @@ describe('Test MainContainer', () => {
     wrapper.setState({ currentBook });
     wrapper.instance().addToShelf({ preventDefault: () => {} });
     wrapper.instance().addRentDays({ target: { name: currentBook, value: 5 } });
-    const newShelf = { 'Fairy tales': { rentDuration: 5, numOfBooks: 1 } };
-    expect(wrapper.state().myShelf).toEqual(newShelf);
+    const { rentDuration } = wrapper.state().myShelf[currentBook];
+    expect(rentDuration).toEqual(5);
 
     // should show message when rentDays are less than 1
     const showMessage = jest.spyOn(wrapper.instance(), 'showMessage');
@@ -99,8 +108,8 @@ describe('Test MainContainer', () => {
     wrapper.setState({ currentBook });
     wrapper.instance().addToShelf({ preventDefault: () => {} });
     wrapper.instance().addNumOfBooks({ target: { name: currentBook, value: 3 } });
-    const newShelf = { 'Fairy tales': { rentDuration: 1, numOfBooks: 3 } };
-    expect(wrapper.state().myShelf).toEqual(newShelf);
+    const { numOfBooks } = wrapper.state().myShelf[currentBook];
+    expect(numOfBooks).toEqual(3);
 
 
     // should show message when numOfBooks is less than 1
@@ -110,14 +119,15 @@ describe('Test MainContainer', () => {
   });
 
   it('Should calculateCharge', () => {
-    const currentBook = 'Fairy tales';
+    const currentBook = library.fiction.books[0].title;
+    const { rentRate } = library.fiction;
     wrapper.setState({ currentBook });
 
     wrapper.instance().addToShelf({ preventDefault: () => {} });
-    expect(wrapper.instance().calculateCharge()).toEqual(1);
+    expect(wrapper.instance().calculateCharge()).toEqual(rentRate);
 
     wrapper.instance().addNumOfBooks({ target: { name: currentBook, value: 3 } });
-    expect(wrapper.instance().calculateCharge()).toEqual(3);
+    expect(wrapper.instance().calculateCharge()).toEqual(3 * rentRate);
   });
 
   it('Should setBookState', () => {
@@ -150,7 +160,7 @@ describe('Test MainContainer', () => {
   });
 
   it('test renderSuggestion', () => {
-    const suggestion = { title: 'title', name: 'name' };
-    expect(renderSuggestion(suggestion)).toEqual('title');
+    const suggestion = library.fiction.books[0];
+    expect(renderSuggestion(suggestion)).toEqual(`${suggestion.title} - fiction`);
   });
 });
